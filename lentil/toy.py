@@ -119,8 +119,8 @@ def get_assessment_grid_model(
         A = np.zeros((num_assessments,
                       embedding_dimension))
         grid_length = int(math.sqrt(num_assessments))
-        for i in xrange(grid_length):
-            for j in xrange(grid_length):
+        for i in range(grid_length):
+            for j in range(grid_length):
                 A[i*grid_length+j, 0] = 1 / grid_length * i
                 A[i*grid_length+j, 1] = 1 / grid_length * j
         return A
@@ -151,14 +151,14 @@ def get_assessment_grid_model(
         student_id = 'Carl'
         student = model.student_embeddings[0, :, 0]
         student_bias = 0
-        for i in xrange(num_assessments):
+        for i in range(num_assessments):
             assessment_id = id_of_assessment_idx(i)
             assessment = model.assessment_embeddings[i, :]
             assessment_bias = 0
             pass_likelihood = math.exp(
                 model.assessment_outcome_log_likelihood_helper(
                     student, assessment, student_bias, assessment_bias, 1))
-            for j in xrange(num_attempts):
+            for j in range(num_attempts):
                 timestep = 1+i*num_attempts + j
                 outcome = random.random() < pass_likelihood
 
@@ -184,7 +184,7 @@ def get_assessment_grid_model(
     model.student_biases = np.zeros(num_students)
     model.assessment_biases = np.zeros(num_assessments)
 
-    assessment_idx_map = {id_of_assessment_idx(i): i for i in xrange(num_assessments)}
+    assessment_idx_map = {id_of_assessment_idx(i): i for i in range(num_assessments)}
     model.history.compute_idx_maps(assessment_idx=assessment_idx_map)
 
     model.history.squash_timesteps()

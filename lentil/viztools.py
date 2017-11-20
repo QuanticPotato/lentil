@@ -137,7 +137,7 @@ def plot_embedding(
             num_assessments = model.history.num_assessments()
             pass_rates = [model.history.assessment_pass_rate(
                 model.history.id_of_assessment_idx(
-                    i), timestep if timestep!=-1 else None) for i in xrange(
+                    i), timestep if timestep!=-1 else None) for i in range(
                 num_assessments)]
             ax.scatter(
                 assessment_embeddings_x,
@@ -180,7 +180,7 @@ def plot_embedding(
             label='concept')
 
         if show_concept_ids:
-            for concept_id, concept_idx in model.graph.idx_of_concept_id.iteritems():
+            for concept_id, concept_idx in model.graph.idx_of_concept_id.items():
                 concept_x = concept_embeddings_x[concept_idx]
                 concept_y = concept_embeddings_y[concept_idx]
                 concept_id_x = concept_x + id_padding_x

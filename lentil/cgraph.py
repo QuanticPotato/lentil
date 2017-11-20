@@ -28,8 +28,8 @@ class ConceptGraph(object):
         self.prereqs_of_concept = prereqs_of_concept
 
         concept_ids = set(self.prereqs_of_concept.keys())
-        concept_ids |= {c for v in self.prereqs_of_concept.values() for c in v}
-        concept_ids |= {c for v in self.concepts_of_module.values() for c in v}
+        concept_ids |= {c for v in list(self.prereqs_of_concept.values()) for c in v}
+        concept_ids |= {c for v in list(self.concepts_of_module.values()) for c in v}
 
         self.idx_of_concept_id = {k: i for i, k in enumerate(concept_ids)}
         self.num_concepts = len(self.idx_of_concept_id)
@@ -51,9 +51,9 @@ class ConceptGraph(object):
             number of concepts for each module in the first array of this tuple)
         """
 
-        module_ids, concept_ids = zip(*[(module_id, concept_id)
+        module_ids, concept_ids = list(zip(*[(module_id, concept_id)
             for module_id in iter_modules()
-            for concept_id in self.concepts_of_module.get(module_id, [])])
+            for concept_id in self.concepts_of_module.get(module_id, [])]))
 
         num_concepts_of_modules = np.array(
             [len(self.concepts_of_module[module_id]) for module_id in module_ids])
@@ -85,7 +85,7 @@ class ConceptGraph(object):
 
         prereq_ids = []
         postreq_ids = []
-        for postreq_id, my_prereq_ids in self.prereqs_of_concept.iteritems():
+        for postreq_id, my_prereq_ids in self.prereqs_of_concept.items():
             postreq_ids.extend([postreq_id] * len(my_prereq_ids))
             prereq_ids.extend(my_prereq_ids)
 

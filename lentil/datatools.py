@@ -4,7 +4,7 @@ Module for storing and manipulating interaction histories
 @author Siddharth Reddy <sgr45@cornell.edu>
 """
 
-from __future__ import division
+
 
 from abc import abstractmethod
 from collections import defaultdict, namedtuple
@@ -204,7 +204,7 @@ class InteractionHistory(object):
         :param float size_of_test_set: Fraction of students to include in test set, where
             0 <= size_of_test_set < 1 (size_of_test_set = 0 => don't use a test set)
         """
-        data.index = range(len(data))
+        data.index = list(range(len(data)))
 
         if sort_by_timestep:
             data.sort('timestep', axis=0, inplace=True)
@@ -299,7 +299,7 @@ class InteractionHistory(object):
                 assessment_ids) if assessment_idx is None else assessment_idx
         self._lesson_idx = buildidx(lesson_ids) if lesson_idx is None else lesson_idx
 
-        build_inv_idx = lambda d: {v: k for k, v in d.iteritems()}
+        build_inv_idx = lambda d: {v: k for k, v in d.items()}
         self._student_inv_idx = build_inv_idx(self._student_idx)
         self._assessment_inv_idx = build_inv_idx(self._assessment_idx)
         self._lesson_inv_idx = build_inv_idx(self._lesson_idx)
@@ -393,7 +393,7 @@ class InteractionHistory(object):
 
                 student_idxes_of_lesson_ixns.extend([self.idx_of_student_id(student_id)] * (T-1))
                 grouped = group.groupby('timestep')
-                for timestep in xrange(2, T+1):
+                for timestep in range(2, T+1):
                     times_since_prev_ixn_of_lesson_ixns.append(grouped.get_group(
                         timestep)['time_since_previous_interaction'][0])
             student_idxes_of_lesson_ixns = np.array(student_idxes_of_lesson_ixns)
@@ -547,7 +547,7 @@ class InteractionHistory(object):
         :rtype: dictionary-keyiterator
         :return: Iterator over student ids
         """
-        return self._student_idx.iterkeys()
+        return iter(self._student_idx.keys())
 
     def iter_assessments(self):
         """
@@ -555,14 +555,14 @@ class InteractionHistory(object):
         :return: Iterator over assessment ids
         """
 
-        return self._assessment_idx.iterkeys()
+        return iter(self._assessment_idx.keys())
 
     def iter_lessons(self):
         """
         :rtype: dictionary-keyiterator
         :return: Iterator over lesson ids
         """
-        return self._lesson_idx.iterkeys()
+        return iter(self._lesson_idx.keys())
 
     def module_sequence_of_student(self, student_id):
         """

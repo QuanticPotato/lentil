@@ -4,7 +4,7 @@ Module for skill models
 @author Siddharth Reddy <sgr45@cornell.edu>
 """
 
-from __future__ import division
+
 
 from abc import abstractmethod
 import math
@@ -484,7 +484,7 @@ class StudentBiasedCoinModel(SkillModel):
                 num_passes = 0
             return (num_passes + 1) / (len(outcomes) + 2)
 
-        for user_id, user_idx in self.idx_of_user_id.iteritems():
+        for user_id, user_idx in self.idx_of_user_id.items():
             self._student_pass_likelihoods[user_idx] = student_pass_rate(user_id)
 
     def assessment_outcome_log_likelihood(
@@ -653,7 +653,7 @@ class IRTModel(SkillModel):
         """
 
         self.history = history[history['module_type']==datatools.AssessmentInteraction.MODULETYPE]
-        self.history.index = range(len(self.history))
+        self.history.index = list(range(len(self.history)))
 
         self.select_regularization_constant = select_regularization_constant
         self.name_of_user_id = name_of_user_id
@@ -770,7 +770,7 @@ class OneParameterLogisticModel(IRTModel):
         assessment_idxes = np.array(df['module_id'].map(self.idx_of_assessment_id).values)
 
         num_ixns = len(df)
-        ixn_idxes = np.concatenate((range(num_ixns), range(num_ixns)), axis=0)
+        ixn_idxes = np.concatenate((list(range(num_ixns)), list(range(num_ixns))), axis=0)
         studa_idxes = np.concatenate((
                 student_idxes, self.num_students + assessment_idxes), axis=0)
 
@@ -800,7 +800,7 @@ class TwoParameterLogisticModel(IRTModel):
         assessment_idxes = np.array(df['module_id'].map(self.idx_of_assessment_id).values)
 
         num_ixns = len(df)
-        ixn_idxes = np.concatenate((range(num_ixns), range(num_ixns)), axis=0)
+        ixn_idxes = np.concatenate((list(range(num_ixns)), list(range(num_ixns))), axis=0)
         studa_idxes = np.concatenate((
                 student_idxes * self.num_assessments + assessment_idxes,
                 self.num_students * self.num_assessments + assessment_idxes), axis=0)

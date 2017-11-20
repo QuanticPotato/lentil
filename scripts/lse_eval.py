@@ -4,7 +4,7 @@ Command-line interface for model evaluation
 @author Siddharth Reddy <sgr45@cornell.edu>
 """
 
-from __future__ import division
+
 
 import click
 import logging

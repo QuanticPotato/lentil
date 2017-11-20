@@ -234,7 +234,7 @@ class TestModels(unittest.TestCase):
             self.assertTrue((slater[:, 1] > model.assessment_embeddings[:, :]).all())
             self.assertTrue((michaels[:, 1] > model.assessment_embeddings[:, :]).all())
 
-            max_ind = lambda s: max(range(len(s)), key=lambda k: s[k])
+            max_ind = lambda s: max(list(range(len(s))), key=lambda k: s[k])
 
             self.assertTrue(max_ind(l1) == max_ind(a2))
             self.assertTrue(max_ind(l2) == max_ind(a1))
@@ -296,17 +296,17 @@ class TestModels(unittest.TestCase):
             self.assertTrue((mclovin[:, 0] > a1).all())
             self.assertTrue((mclovin[:, 0] > a2).all())
             self.assertTrue((mclovin[:, 0] < a3).any())
-            for i in xrange(3):
+            for i in range(3):
                 self.assertTrue((fogell[:, 0] <= model.assessment_embeddings[i, :]).any())
                 self.assertTrue((fogell[:, 1] <= model.assessment_embeddings[i, :]).any())
 
             eps = 0.1
-            for i in xrange(2):
+            for i in range(2):
                 self.assertTrue((seth[:, i] >= a1 - eps).all() and (seth[:, i] > a1 - eps).any())
                 self.assertTrue((seth[:, i] < a2).any())
                 self.assertTrue((seth[:, i] < a3).any())
 
-            for i in xrange(2):
+            for i in range(2):
                 self.assertTrue((evan[:, i] >= a2 - eps).all() and (evan[:, i] > a2 - eps).any())
                 self.assertTrue((evan[:, i] < a1).any())
                 self.assertTrue((evan[:, i] < a3).any())

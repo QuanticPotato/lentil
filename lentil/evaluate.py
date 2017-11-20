@@ -4,7 +4,7 @@ Module for skill model evaluation
 @author Siddharth Reddy <sgr45@cornell.edu>
 """
 
-from __future__ import division
+
 
 import logging
 import random
@@ -377,7 +377,7 @@ def cross_validated_auc(
             for each student
         """
 
-        for k, build_model in model_builders.iteritems():
+        for k, build_model in model_builders.items():
             _logger.info('Training %s model...', k)
             models[k] = build_model(history, filtered_history, split_history=split_history)
 
@@ -399,7 +399,7 @@ def cross_validated_auc(
         train_y_true = (2 * train_assessment_interactions['outcome'] - 1).values
         val_y_true = (2 * val_interactions['outcome'] - 1).values
 
-        for k, model in models.iteritems():
+        for k, model in models.items():
             _logger.info('Evaluating %s model...', k)
             train_probas_pred[k] = model.assessment_pass_likelihoods(train_assessment_interactions)
             val_probas_pred[k] = model.assessment_pass_likelihoods(val_interactions)
@@ -419,7 +419,7 @@ def cross_validated_auc(
             appended to its lists
         """
 
-        for k, v in train_probas_pred.iteritems():
+        for k, v in train_probas_pred.items():
             y_true = [x for x, y in zip(train_y_true, v) if not np.isnan(y)]
             probas_pred = [y for y in v if not np.isnan(y)]
             if len(y_true) == 1:
@@ -512,8 +512,8 @@ def cross_validated_auc(
 
         err = update_err(err)
 
-        test_err = {k: v[-1] for k, v in err.iteritems()}
-        err = {k: v[:-1] for k, v in err.iteritems()}
+        test_err = {k: v[-1] for k, v in err.items()}
+        err = {k: v[:-1] for k, v in err.items()}
     else:
         test_err = None
     

@@ -4,7 +4,7 @@ Module for estimating model parameters
 @author Siddharth Reddy <sgr45@cornell.edu>
 """
 
-from __future__ import division
+
 
 from abc import abstractmethod
 from collections import OrderedDict
@@ -80,7 +80,7 @@ def gradient_descent(
 
     if using_adagrad:
         # historical gradient (for Adagrad)
-        hg = {k: np.zeros_like(v) for k, v in params.iteritems()}
+        hg = {k: np.zeros_like(v) for k, v in params.items()}
 
     checkpoint_iter_step = max(1, max_iter // num_checkpoints)
     is_checkpoint = lambda idx: idx % checkpoint_iter_step == 0
@@ -94,13 +94,13 @@ def gradient_descent(
 
         epsilon = 1e-9 # epsilon upper bound
         num_samples = 1 # number of epsilon samples to draw
-        for k, v in g.iteritems():
+        for k, v in g.items():
             if v is None:
                 continue
             fd = [] # gradient components computed with finite difference method
             cf = [] # gradient components computed with closed form expression
             for i, c in enumerate(v.ravel()):
-                for _ in xrange(num_samples):
+                for _ in range(num_samples):
                     nparams = copy.deepcopy(params)
                     delta = epsilon * c
 
@@ -144,7 +144,7 @@ def gradient_descent(
     start_time = time.time()
 
     rel_diff = 2 * ftol # arbitrary starting point (should be greater than ftol)
-    for iter_idx in xrange(max_iter):
+    for iter_idx in range(max_iter):
         g, cst = grads(params)
 
         # don't use "for k, v in g.iteritems()", because we may be computing gradients
@@ -186,7 +186,7 @@ def gradient_descent(
         _, ax = plt.subplots()
         ax.set_xlabel('Iteration')
         ax.set_ylabel('L2 norm of gradient')
-        for k, v in gradient_norms.iteritems():
+        for k, v in gradient_norms.items():
             ax.plot(v, label=k)
         ax.legend(loc='upper right')
         plt.show()
@@ -312,7 +312,7 @@ class EmbeddingMAPEstimator(object):
         }
 
         params = OrderedDict()
-        for key, value in param_shapes.iteritems():
+        for key, value in param_shapes.items():
             if key in self.initial_param_vals:
                 params[key] = param_constraint_funcs[key](self.initial_param_vals[key])
             else:
@@ -334,8 +334,8 @@ class EmbeddingMAPEstimator(object):
             using_prereqs=model.using_prereqs)
 
         #param_sizes = {k: v.size for k, v in params.iteritems()}
-        param_sizes = {k: np.prod(v.shape) for k, v in params.iteritems()}
-        param_vals = np.concatenate([v.ravel() for v in params.itervalues()], axis=0)
+        param_sizes = {k: np.prod(v.shape) for k, v in params.items()}
+        param_vals = np.concatenate([v.ravel() for v in params.values()], axis=0)
 
         (
             student_idxes_for_assessment_ixns,
@@ -490,7 +490,7 @@ class EmbeddingMAPEstimator(object):
                 None) if model.using_graph_prior else None
         }
         box_constraints = np.concatenate(
-            [[box_constraints_of_parameters[k]] * v.size for (k, v) in params.iteritems()])
+            [[box_constraints_of_parameters[k]] * v.size for (k, v) in params.items()])
 
         gradient_holder = np.zeros(param_vals.shape)
 
@@ -613,7 +613,7 @@ class EmbeddingMAPEstimator(object):
 
         # manually pin student state after last interaction 
         # lack of interactions => no drift likelihoods in objective function to pin students
-        for student_id, t in timestep_of_last_interaction.iteritems():
+        for student_id, t in timestep_of_last_interaction.items():
             student_idx = model.history.idx_of_student_id(student_id)
             params[models.STUDENT_EMBEDDINGS][student_idx, :, t:] = \
                     params[models.STUDENT_EMBEDDINGS][student_idx, :, t][:, None]

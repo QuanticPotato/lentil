@@ -7,7 +7,7 @@ for a bunch of equations that summarize most of the functions below
 @author Siddharth Reddy <sgr45@cornell.edu>
 """
 
-from __future__ import division
+
 
 import logging
 
